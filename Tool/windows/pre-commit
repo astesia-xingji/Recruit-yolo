@@ -1,0 +1,13 @@
+@echo off
+:: 拉取 main 分支最新代码
+git fetch origin main
+
+:: 检查与 main 分支的冲突
+git merge-tree (git merge-base HEAD origin/main) HEAD origin/main | findstr /r "^+<<<<<<<" >nul
+if %errorlevel% equ 0 (
+    echo 错误：与 main 分支存在冲突，请先解决冲突再提交！
+    exit /b 1
+)
+
+echo 提交前检查通过。
+exit /b 0

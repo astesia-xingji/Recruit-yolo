@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# 获取main分支最新代码
+git fetch origin main
+
+# 检查是否有冲突
+if git merge-tree $(git merge-base HEAD origin/main) HEAD origin/main | grep -q '^+<<<<<<<'; then
+  echo "Error: 与main分支存在冲突，请先解决冲突再提交！"
+  exit 1
+fi
+
+# 可以添加其他检查，如代码风格、测试等
+echo "Pre-commit checks passed."
+exit 0
